@@ -7,7 +7,7 @@
 **Florent Didelot**  
 - Âge : 30 ans  
 - Fondateur d’une agence web, développeur web, ingénieur SRE et formateur  
-
+https://docs.google.com/presentation/d/1Fui6U8jyKWSfukGFXqIXTkvbesEvp1q1/edit?usp=sharing&ouid=108025948243729670443&rtpof=true&sd=true
 ---
 
 ### Le réseau M2I Formation
