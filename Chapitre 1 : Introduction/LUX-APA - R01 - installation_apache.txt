@@ -1,0 +1,93 @@
+###############
+### ETAPE 1 ###
+###############
+
+# Met à jour la liste des paquets disponibles pour s'assurer que les dernières versions sont installées.
+sudo apt update
+
+# Installe Apache2 sur le système.
+sudo apt install apache2
+
+# Vérifie l'état du service Apache pour voir s'il fonctionne correctement. (CTRL + C pour quitter)
+sudo systemctl status apache2
+
+#On ouvre un navigateur su http://localhost en local ou http://ip-distante en ligne (exemple : http://34.31.126.160)
+
+###############
+### ETAPE 2 ###
+###############
+
+# Ouvre l'éditeur nano pour créer un fichier de configuration pour un nouveau Virtual Host dans Apache.
+
+sudo nano /etc/apache2/sites-available/mon-site.conf
+
+#Le fichier mon-site.conf contient la configuration du Virtual Host :
+
+<VirtualHost *:80>
+    # Adresse email de l'administrateur du serveur, utilisée dans les messages d'erreur générés par Apache.
+    ServerAdmin webmaster@localhost
+    
+    # Définit le répertoire racine du site web. Ici, Apache servira les fichiers à partir de /var/www/html.
+    DocumentRoot /var/www/html
+
+    # Configuration des permissions du répertoire où se trouvent les fichiers du site.
+    <Directory /var/www/html>
+        # Permet de lister les fichiers dans le répertoire et de suivre les liens symboliques.
+        Options Indexes FollowSymLinks
+        
+        # Autorise les directives de configuration locales via des fichiers .htaccess.
+        AllowOverride All
+        
+        # Autorise l'accès à tout utilisateur (non restreint).
+        Require all granted
+    </Directory>
+
+    # Spécifie où Apache doit enregistrer les messages d'erreur.
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    # Spécifie où Apache doit enregistrer les logs des accès au site. "combined" indique un format de log étendu.
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    # (Commentée) ServerName définit le nom de domaine pour ce Virtual Host. Active cette ligne si tu utilises un nom de domaine.
+    # ServerName mon-site.com
+</VirtualHost>
+
+###############
+### ETAPE 3 ###
+###############
+
+# Vérifie si la configuration d'Apache est correcte avant de recharger le service. La réponse attendu doit être "Syntax OK"
+sudo apachectl configtest
+
+# Active le module mod_rewrite pour permettre la réécriture d'URL.
+sudo a2enmod rewrite
+
+# Redémarre Apache pour appliquer les changements.
+sudo systemctl restart apache2
+
+
+###############
+### ETAPE 4 ###
+###############
+
+# Ouvre l'éditeur nano pour créer un fichier page.html dans le répertoire racine du site (/var/www/html).
+sudo nano /var/www/html/page.html
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Apache</title>
+</head>
+<body>
+    <!-- Affiche un titre indiquant que le serveur Apache fonctionne correctement -->
+    <h1>Apache fonctionne correctement !</h1>
+    
+    <!-- Un petit message pour confirmer que le serveur est opérationnel -->
+    <p>Si vous voyez ce message, cela signifie que votre serveur Apache est opérationnel.</p>
+
+    <img src="https://www.m2iformation.fr/images/og/image-6.jpg" alt="M2i" />
+
+</body>
+</html>
